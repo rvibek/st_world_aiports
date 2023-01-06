@@ -81,7 +81,7 @@ def main():
 	# call to render Folium map in Streamlit
 	st_map =  st_folium(marker_cluster, width=725)
 
-	return stmap 
+	return st_map 
 
 
 
