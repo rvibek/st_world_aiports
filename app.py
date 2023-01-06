@@ -71,7 +71,7 @@ def main():
     marker_cluster = MarkerCluster(name="Airports").add_to(m)
 
 	# Add the markers to the map and cluster them
-    for marker in markers[:200]:
+    for marker in markers:
 	    folium.Marker(marker[:2], popup=marker[2]).add_to(marker_cluster)
     Fullscreen().add_to(m)
     m.add_child(folium.map.LayerControl())
