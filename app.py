@@ -74,7 +74,7 @@ markers = list(zip(airports['latitude_deg'], airports['longitude_deg'], airports
 marker_cluster = MarkerCluster(name="Airports").add_to(m)
 
 # Add the markers to the map and cluster them
-for marker in markers:
+for marker in markers[:200]:
     folium.Marker(marker[:2], popup=marker[2]).add_to(marker_cluster)
 
 
@@ -85,4 +85,11 @@ m.add_child(folium.map.LayerControl())
 # marker_cluster.save("airports.html")
 
 # call to render Folium map in Streamlit
-st_data = st_folium(marker_cluster, width=725)
+
+
+c1, c2 = st.columns(2)
+with c1:
+	output = st_folium(marker_cluster, width=725)
+
+with c2:
+	st.write(output)
