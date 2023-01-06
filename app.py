@@ -11,11 +11,7 @@ from streamlit_folium import st_folium
 @st.cache
 def load_data():
 	df = pd.read_csv("https://davidmegginson.github.io/ourairports-data/airports.csv")
-	return df[:100]
-
-
-airports = load_data()
-
+	return df
 
 
 m = folium.Map(location=[0, 0], zoom_start=3)
@@ -66,29 +62,32 @@ basemaps['Google Maps'].add_to(m)
 basemaps['Google Satellite Hybrid'].add_to(m)
 
 
+def main():
+	airports = load_data()
+	markers = list(zip(airports['latitude_deg'], airports['longitude_deg'], airports['name']))
+
+	marker_cluster = MarkerCluster(name="Airports").add_to(m)
+
+	# Add the markers to the map and cluster them
+	for marker in markers[:200]:
+	    folium.Marker(marker[:2], popup=marker[2]).add_to(marker_cluster)
+
+
+	Fullscreen().add_to(m)
+
+	m.add_child(folium.map.LayerControl())
+
+
+	# call to render Folium map in Streamlit
+	st_map =  st_folium(marker_cluster, width=725)
+
+	return stmap 
 
 
 
-markers = list(zip(airports['latitude_deg'], airports['longitude_deg'], airports['name']))
-
-marker_cluster = MarkerCluster(name="Airports").add_to(m)
-
-# Add the markers to the map and cluster them
-for marker in markers:
-    folium.Marker(marker[:2], popup=marker[2]).add_to(marker_cluster)
 
 
-Fullscreen().add_to(m)
-m.add_child(folium.map.LayerControl())
-
-# # marker_cluster.save("airports.html")
-
-# # call to render Folium map in Streamlit
+if __name__ == "__main__":
+    main()
 
 
-c1, c2 = st.columns(2)
-with c1:
-	output = st_folium(marker_cluster, width=725)
-
-with c2:
-	st.write(output)
