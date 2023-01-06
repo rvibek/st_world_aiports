@@ -6,6 +6,7 @@ import streamlit as st
 from streamlit_folium import st_folium
 
 
+st.set_page_config(layout="wide")
 
 # load data
 @st.cache
@@ -63,25 +64,23 @@ basemaps['Google Satellite Hybrid'].add_to(m)
 
 
 def main():
-	airports = load_data()
-	markers = list(zip(airports['latitude_deg'], airports['longitude_deg'], airports['name']))
-
-	marker_cluster = MarkerCluster(name="Airports").add_to(m)
+    st.title('Airport around the world')
+    add_sidebar = st.sidebar.markdown('some components')
+    airports = load_data()
+    markers = list(zip(airports['latitude_deg'], airports['longitude_deg'], airports['name']))
+    marker_cluster = MarkerCluster(name="Airports").add_to(m)
 
 	# Add the markers to the map and cluster them
-	for marker in markers[:200]:
+    for marker in markers[:200]:
 	    folium.Marker(marker[:2], popup=marker[2]).add_to(marker_cluster)
-
-
-	Fullscreen().add_to(m)
-
-	m.add_child(folium.map.LayerControl())
+    Fullscreen().add_to(m)
+    m.add_child(folium.map.LayerControl())
 
 
 	# call to render Folium map in Streamlit
-	st_map =  st_folium(marker_cluster, width=725)
-
-	return st_map 
+    st_map =  st_folium(m, width="100%")
+    
+    return st_map 
 
 
 
@@ -89,5 +88,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
