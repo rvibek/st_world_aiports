@@ -11,7 +11,7 @@ from streamlit_folium import st_folium
 @st.cache
 def load_data():
 	df = pd.read_csv("https://davidmegginson.github.io/ourairports-data/airports.csv")
-	return df
+	return df[:100]
 
 
 airports = load_data()
@@ -69,17 +69,16 @@ basemaps['Google Satellite Hybrid'].add_to(m)
 
 
 
-# markers = list(zip(airports['latitude_deg'], airports['longitude_deg'], airports['name']))
+markers = list(zip(airports['latitude_deg'], airports['longitude_deg'], airports['name']))
 
-# marker_cluster = MarkerCluster(name="Airports").add_to(m)
+marker_cluster = MarkerCluster(name="Airports").add_to(m)
 
-# # Add the markers to the map and cluster them
-# for marker in markers[:200]:
-#     folium.Marker(marker[:2], popup=marker[2]).add_to(marker_cluster)
+# Add the markers to the map and cluster them
+for marker in markers:
+    folium.Marker(marker[:2], popup=marker[2]).add_to(marker_cluster)
 
 
 Fullscreen().add_to(m)
-
 m.add_child(folium.map.LayerControl())
 
 # # marker_cluster.save("airports.html")
@@ -89,7 +88,7 @@ m.add_child(folium.map.LayerControl())
 
 c1, c2 = st.columns(2)
 with c1:
-	output = st_folium(m, width=725)
+	output = st_folium(marker_cluster, width=725)
 
 with c2:
 	st.write(output)
