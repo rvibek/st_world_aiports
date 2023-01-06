@@ -78,9 +78,9 @@ basemaps['Google Satellite Hybrid'].add_to(m)
 #     folium.Marker(marker[:2], popup=marker[2]).add_to(marker_cluster)
 
 
-# Fullscreen().add_to(m)
+Fullscreen().add_to(m)
 
-# m.add_child(folium.map.LayerControl())
+m.add_child(folium.map.LayerControl())
 
 # # marker_cluster.save("airports.html")
 
