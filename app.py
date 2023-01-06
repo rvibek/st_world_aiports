@@ -12,7 +12,7 @@ st.set_page_config(layout="wide")
 @st.cache
 def load_data():
 	df = pd.read_csv("https://davidmegginson.github.io/ourairports-data/airports.csv")
-	return df
+	return df[:500]
 
 
 m = folium.Map(location=[0, 0], zoom_start=3)
